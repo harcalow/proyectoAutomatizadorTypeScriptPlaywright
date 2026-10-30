@@ -58,3 +58,12 @@ tests/              Un archivo .spec.ts por historia de usuario
 
 En el reporte HTML cada prueba aparece agrupada por historia, con el criterio
 como título, la historia y su descripción como anotaciones, y las capturas de cada paso.
+
+## Integración continua (CI)
+
+El workflow [`.github/workflows/playwright.yml`](.github/workflows/playwright.yml) ejecuta la
+verificación de tipos y todas las pruebas en GitHub Actions en cada push a `main` o `dev`,
+en cada Pull Request hacia `main`, y de forma manual desde la pestaña **Actions**.
+
+El reporte HTML queda disponible como artefacto `reporte-playwright` (30 días) en la
+página de cada ejecución.
