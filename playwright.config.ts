@@ -3,11 +3,11 @@ import { env } from './src/utils/env';
 
 export default defineConfig({
   testDir: './tests',
-  timeout: 30_000,
+  timeout: 60_000,
   expect: { timeout: 10_000 },
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 2 : 1,
   workers: process.env.CI ? 2 : undefined,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {

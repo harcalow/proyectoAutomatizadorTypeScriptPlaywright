@@ -25,16 +25,36 @@ cp .env.example .env
 ## Estructura
 
 ```
+historias-usuario/  Historias de usuario en Markdown (punto de partida de todo)
 src/
-  pages/      Page Objects (BasePage, LoginPage, DashboardPage)
-  fixtures/   Fixtures que inyectan los Page Objects en las pruebas
-  data/       Datos de prueba (usuarios)
-  utils/      Utilidades (variables de entorno)
-tests/        Especificaciones de prueba
+  pages/            Page Objects (BasePage, LoginPage, DashboardPage)
+  fixtures/         Fixtures que inyectan los Page Objects en las pruebas
+  data/             Datos de prueba (usuarios)
+  utils/            Utilidades (entorno, evidencias, lector de historias)
+tests/              Un archivo .spec.ts por historia de usuario
 ```
 
-## Agregar una página nueva
+## Flujo de trabajo: todo parte de una historia de usuario
 
-1. Crea `src/pages/MiPagina.ts` extendiendo `BasePage` y define `path` y sus locators.
-2. Regístrala en `src/fixtures/pages.fixture.ts`.
-3. Úsala en las pruebas importando `test` y `expect` desde el fixture.
+1. Copia `historias-usuario/_PLANTILLA.md` como `historias-usuario/HU-002-nombre-corto.md`.
+2. Completa las tres secciones: **Título**, **Descripción** y **Criterios de aceptación**.
+   Cada criterio va en una línea con el formato `- CA-01: Dado ..., cuando ..., entonces ...`.
+3. Crea `tests/HU-002-nombre-corto.spec.ts` y carga la historia:
+
+   ```ts
+   const hu = loadUserStory('HU-002');
+
+   test.describe(`${hu.id} - ${hu.title}`, () => {
+     test(hu.criterion('CA-01'), async ({ page }, testInfo) => {
+       await test.step('1. ...', async () => { /* ... */ });
+     });
+   });
+   ```
+
+   Hay un test por cada criterio de aceptación. Si un criterio no existe en la
+   historia, la prueba falla al cargar, así el código y la historia se mantienen sincronizados.
+4. Si la historia usa una página nueva, crea su Page Object en `src/pages/`
+   (extendiendo `BasePage`) y regístralo en `src/fixtures/pages.fixture.ts`.
+
+En el reporte HTML cada prueba aparece agrupada por historia, con el criterio
+como título, la historia y su descripción como anotaciones, y las capturas de cada paso.
